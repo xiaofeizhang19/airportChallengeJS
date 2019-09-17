@@ -7,8 +7,12 @@ describe('airport', function() {
     plane = new Plane();
   });
 
+  it('has a default capacity', function() {
+    expect(heathrow.capacity).toEqual(20);
+  });
+
   it('instructs plane to land', function() {
-    heathrow.land(plane);
-    expect(heathrow.parkedPlanes).toContain(plane)
+    heathrow.clearForLanding(plane);
+    expect(heathrow.parkedPlanes).toContain(plane);
   });
 });

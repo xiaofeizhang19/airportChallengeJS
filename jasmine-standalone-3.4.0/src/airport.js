@@ -1,9 +1,17 @@
 function Airport() {
+  this.capacity = 20;
   this.parkedPlanes = [];
-};
+}
 
-Airport.prototype.land = function(plane) {
+Airport.prototype.clearForLanding = function(plane) {
   this.parkedPlanes.push(plane);
 };
 
-function Plane() {};
+// Airport.prototype.takeOff = function(plane) {
+//   for(var i = 0; i < this.parkedPlanes.length; i++) {
+//     if(this.parkedPlanes[i] === plane) {
+//       this.parkedPlanes.splice(i, 1);
+//     }
+//   }
+// };
+
