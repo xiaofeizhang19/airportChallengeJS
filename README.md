@@ -2,6 +2,6 @@
 
 Week 5 weekly challenge at Makers Academy.
 
-Re-write of the ciarport challenge in JavaScript.
+Re-write of the airport challenge in JavaScript.
 
-For introduction refer to [https://github.com/makersacademy/airport_challenge](Airport Challenge).
+For introduction refer to [Airport Challenge](https://github.com/makersacademy/airport_challenge).
