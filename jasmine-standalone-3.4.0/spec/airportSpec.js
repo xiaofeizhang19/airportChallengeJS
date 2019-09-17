@@ -1,24 +1,32 @@
 describe('airport', function() {
-  var heathrow;
+  var airport;
   var plane;
 
   beforeEach(function() {
-    heathrow = new Airport();
+    airport = new Airport();
     plane = new Plane();
   });
 
   it('has a default capacity', function() {
-    expect(heathrow.capacity).toEqual(20);
+    expect(airport.capacity).toEqual(20);
   });
 
   it('instructs plane to land', function() {
-    heathrow.clearForLanding(plane);
-    expect(heathrow.parkedPlanes).toContain(plane);
+    airport.clearForLanding(plane);
+    expect(airport.parkedPlanes).toContain(plane);
   });
 
-  it('planes can be instructed to takeoff', function() {
-    plane.land(heathrow);
-    plane.takeOff(heathrow);
-    expect(heathrow.parkedPlanes).not.toContain(plane);
+  it('can clear planes for takeoff', function() {
+    spyOn(airport, 'isStormy').and.returnValue(false);
+    airport.clearForLanding(plane);
+    airport.clearForTakeoff(plane);
+    expect(airport.parkedPlanes).toEqual([]);
+  });
+
+  it('blocks takeoff when weather is stormy', function() {
+    plane.land(airport);
+    spyOn(airport, 'isStormy').and.returnValue(true);
+    expect(function(){airport.clearForTakeoff();}).toThrowError('cannot takeoff during storm');
+    expect(airport.parkedPlanes).toContain(plane);
   });
 });
