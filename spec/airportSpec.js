@@ -1,32 +1,45 @@
 describe('airport', function() {
   var airport;
   var plane;
+  var weather;
 
   beforeEach(function() {
-    airport = new Airport();
-    plane = new Plane();
+    plane = jasmine.createSpy('plane');
+    weather = jasmine.createSpyObj('weather', ['isStormy']);
+    airport = new Airport(weather);
   });
 
   it('has a default capacity', function() {
     expect(airport.capacity).toEqual(20);
   });
 
-  it('instructs plane to land', function() {
-    airport.clearForLanding(plane);
-    expect(airport.parkedPlanes).toContain(plane);
+  describe('under normal weather conditions', function() {
+    beforeEach(function() {
+      weather.isStormy.and.returnValue(false);
+    });
+
+    it('instructs plane to land', function() {
+      airport.clearForLanding(plane);
+      expect(airport.planes()).toContain(plane);
+    });
+  
+    it('can clear planes for takeoff', function() {
+      airport.clearForLanding(plane);
+      airport.clearForTakeoff(plane);
+      expect(airport.planes()).toEqual([]);
+    });
   });
 
-  it('can clear planes for takeoff', function() {
-    spyOn(airport, 'isStormy').and.returnValue(false);
-    airport.clearForLanding(plane);
-    airport.clearForTakeoff(plane);
-    expect(airport.parkedPlanes).toEqual([]);
-  });
+  describe('under stormy conditions', function() {
+    beforeEach(function() {
+      weather.isStormy.and.returnValue(true);
+    })
+    it ('prevents landing when weather is stormy', function() {
+      expect(function(){ airport.clearForLanding(plane); }).toThrowError('cannot land during storm')
+    });
 
-  it('blocks takeoff when weather is stormy', function() {
-    plane.land(airport);
-    spyOn(airport, 'isStormy').and.returnValue(true);
-    expect(function(){airport.clearForTakeoff();}).toThrowError('cannot takeoff during storm');
-    expect(airport.parkedPlanes).toContain(plane);
+    it('blocks takeoff when weather is stormy', function() {
+      expect(function(){ airport.clearForTakeoff(plane); }).toThrowError('cannot takeoff during storm');
+    });
   });
 });
