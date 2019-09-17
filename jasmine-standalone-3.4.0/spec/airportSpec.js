@@ -15,4 +15,10 @@ describe('airport', function() {
     heathrow.clearForLanding(plane);
     expect(heathrow.parkedPlanes).toContain(plane);
   });
+
+  it('planes can be instructed to takeoff', function() {
+    plane.land(heathrow);
+    plane.takeOff(heathrow);
+    expect(heathrow.parkedPlanes).not.toContain(plane);
+  });
 });
