@@ -1,4 +1,4 @@
-describe('airport', function() {
+describe('Airport', function() {
   var airport;
   var plane;
   var weather;
@@ -20,7 +20,7 @@ describe('airport', function() {
 
     it('instructs plane to land', function() {
       airport.clearForLanding(plane);
-      expect(airport.planes()).toContain(plane);
+      expect(airport.planes()).toEqual([plane]);
     });
   
     it('can clear planes for takeoff', function() {
